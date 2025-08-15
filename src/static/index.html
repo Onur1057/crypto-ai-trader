@@ -1,0 +1,1925 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crypto AI Trader - AI Destekli Trading Platformu</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            min-height: 100vh;
+        }
+        
+        .header {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            color: white;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .header h1 {
+            font-size: 1.8rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .status-bar {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+            font-size: 0.9rem;
+        }
+        
+        .status-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .status-indicator {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #4ade80;
+        }
+        
+        .refresh-btn {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+            backdrop-filter: blur(10px);
+        }
+        
+        .refresh-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+        
+        .nav-tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 0.5rem;
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+            flex-wrap: wrap;
+        }
+        
+        .nav-tab {
+            flex: 1;
+            min-width: 120px;
+            padding: 1rem;
+            background: transparent;
+            color: rgba(255, 255, 255, 0.7);
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.9rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+        
+        .nav-tab.active {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            backdrop-filter: blur(10px);
+        }
+        
+        .nav-tab:hover {
+            background: rgba(255, 255, 255, 0.15);
+            color: white;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .content-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 16px;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            min-height: 500px;
+        }
+        
+        .card-header {
+            padding: 1.5rem 2rem;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .card-header h2 {
+            font-size: 1.4rem;
+            color: #333;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .card-content {
+            padding: 2rem;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: #666;
+        }
+        
+        .empty-state h3 {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .empty-state p {
+            opacity: 0.7;
+        }
+        
+        /* Chat Styles */
+        .chat-container {
+            display: flex;
+            flex-direction: column;
+            height: 500px;
+        }
+        
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1rem;
+            background: #f8f9fa;
+        }
+        
+        .chat-message {
+            margin-bottom: 1rem;
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .message-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+        
+        .user-avatar {
+            background: #667eea;
+            color: white;
+        }
+        
+        .ai-avatar {
+            background: #4ade80;
+            color: white;
+        }
+        
+        .message-content {
+            flex: 1;
+            background: white;
+            padding: 0.75rem 1rem;
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        
+        .message-time {
+            font-size: 0.7rem;
+            color: #666;
+            margin-top: 0.25rem;
+        }
+        
+        .chat-input-container {
+            padding: 1rem;
+            border-top: 1px solid #eee;
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .chat-input {
+            flex: 1;
+            padding: 0.75rem 1rem;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            outline: none;
+        }
+        
+        .chat-send-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: background 0.2s;
+        }
+        
+        .chat-send-btn:hover {
+            background: #5a6fd8;
+        }
+        
+        /* Training Styles */
+        .training-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .training-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            border-left: 4px solid #667eea;
+        }
+        
+        .training-card h3 {
+            color: #333;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .training-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .stat-item {
+            text-align: center;
+            padding: 1rem;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+        
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #667eea;
+        }
+        
+        .stat-label {
+            font-size: 0.8rem;
+            color: #666;
+            margin-top: 0.25rem;
+        }
+        
+        .training-form {
+            display: grid;
+            gap: 1rem;
+        }
+        
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        
+        .form-label {
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: #333;
+        }
+        
+        .form-input, .form-select, .form-textarea {
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        
+        .form-input:focus, .form-select:focus, .form-textarea:focus {
+            border-color: #667eea;
+        }
+        
+        .form-textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+        
+        .btn-primary {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: background 0.2s;
+        }
+        
+        .btn-primary:hover {
+            background: #5a6fd8;
+        }
+        
+        .learning-suggestions {
+            background: #f0f9ff;
+            border: 1px solid #bae6fd;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .learning-suggestions h4 {
+            color: #0369a1;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+        
+        .learning-suggestions ul {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .learning-suggestions li {
+            padding: 0.25rem 0;
+            color: #0369a1;
+            font-size: 0.85rem;
+        }
+        
+        .learning-suggestions li:before {
+            content: "💡 ";
+            margin-right: 0.5rem;
+        }
+        
+        /* Signal Card Styles */
+        .signal-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            border-left: 4px solid #667eea;
+        }
+        
+        .signal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .signal-pair {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #333;
+        }
+        
+        .signal-direction {
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 0.8rem;
+            color: white;
+        }
+        
+        .signal-direction.LONG {
+            background: #4ade80;
+        }
+        
+        .signal-direction.SHORT {
+            background: #ef4444;
+        }
+        
+        .signal-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 1rem;
+            font-size: 0.9rem;
+        }
+        
+        .signal-detail {
+            text-align: center;
+        }
+        
+        .signal-detail strong {
+            display: block;
+            color: #666;
+            font-size: 0.8rem;
+            margin-bottom: 0.25rem;
+        }
+        
+        .pnl-positive {
+            color: #4ade80;
+        }
+        
+        .pnl-negative {
+            color: #ef4444;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+            
+            .status-bar {
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+            
+            .nav-tabs {
+                flex-direction: column;
+            }
+            
+            .training-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .signal-details {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        /* GELİŞMİŞ İSTATİSTİKLER STİLLERİ */
+        .stats-overview {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            padding: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: transform 0.2s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-2px);
+        }
+
+        .stat-card.profit { border-left: 4px solid #10b981; }
+        .stat-card.signals { border-left: 4px solid #3b82f6; }
+        .stat-card.success { border-left: 4px solid #f59e0b; }
+        .stat-card.confidence { border-left: 4px solid #ef4444; }
+
+        .stat-icon {
+            font-size: 2rem;
+            opacity: 0.8;
+        }
+
+        .stat-info {
+            flex: 1;
+        }
+
+        .stat-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-change {
+            font-size: 0.8rem;
+            color: #10b981;
+            font-weight: 500;
+        }
+
+        .filter-buttons {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 0.5rem 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 0.85rem;
+        }
+
+        .filter-btn.active,
+        .filter-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+
+        .performance-section {
+            margin-bottom: 2rem;
+        }
+
+        .performance-section h3 {
+            color: white;
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+
+        .performance-list {
+            display: grid;
+            gap: 0.75rem;
+        }
+
+        .performance-item {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-left: 3px solid;
+        }
+
+        .performance-item.profit { border-left-color: #10b981; }
+        .performance-item.loss { border-left-color: #ef4444; }
+        .performance-item.neutral { border-left-color: #6b7280; }
+
+        .signals-table-container {
+            overflow-x: auto;
+        }
+
+        .signals-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+        .signals-table th,
+        .signals-table td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+
+        .signals-table th {
+            background: rgba(255, 255, 255, 0.1);
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .signals-table td {
+            font-size: 0.85rem;
+        }
+
+        .confidence-analysis {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .confidence-group {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            padding: 1.5rem;
+        }
+
+        .confidence-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .confidence-header h4 {
+            color: white;
+            margin: 0;
+        }
+
+        .confidence-count {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .confidence-stats {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .confidence-stat {
+            display: flex;
+            justify-content: space-between;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.9rem;
+        }
+
+        .confidence-signals {
+            display: grid;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .confidence-signal-item {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 0.5rem;
+            border-radius: 4px;
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8rem;
+        }
+
+        .sector-analysis {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .sector-group {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            padding: 1.5rem;
+        }
+
+        .sector-group h4 {
+            color: white;
+            margin-bottom: 1rem;
+        }
+
+        .sector-performance {
+            display: grid;
+            gap: 0.5rem;
+        }
+
+        .sector-item {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 0.75rem;
+            border-radius: 4px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.85rem;
+        }
+
+        .risk-analysis {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .risk-section {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            padding: 1.5rem;
+        }
+
+        .risk-section h4 {
+            color: white;
+            margin-bottom: 1rem;
+        }
+
+        .risk-content {
+            display: grid;
+            gap: 0.5rem;
+        }
+
+        .risk-item {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 0.75rem;
+            border-radius: 4px;
+            border-left: 3px solid;
+        }
+
+        .risk-item.high-risk { border-left-color: #ef4444; }
+        .risk-item.opportunity { border-left-color: #10b981; }
+
+        .analysis-controls {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .analysis-controls select {
+            padding: 0.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border-radius: 6px;
+            font-size: 0.85rem;
+        }
+
+        .btn-secondary {
+            padding: 0.5rem 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 0.85rem;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        @media (max-width: 768px) {
+            .stats-overview {
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                gap: 1rem;
+            }
+            
+            .stat-card {
+                padding: 1rem;
+            }
+            
+            .sector-analysis {
+                grid-template-columns: 1fr;
+            }
+            
+            .risk-analysis {
+                grid-template-columns: 1fr;
+            }
+            
+            .filter-buttons {
+                justify-content: center;
+            }
+            
+            .analysis-controls {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🚀 Crypto AI Trader</h1>
+        <div class="status-bar">
+            <div class="status-item">
+                <div class="status-indicator"></div>
+                <span>API Durumu: <span id="api-status">Yükleniyor...</span></span>
+            </div>
+            <div class="status-item">
+                <span>Son Güncelleme: <span id="last-update">--:--:--</span></span>
+            </div>
+            <button class="refresh-btn" onclick="refreshData()">🔄 Yenile</button>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="nav-tabs">
+            <button class="nav-tab active" onclick="showTab('signals')">
+                📊 AI Sinyaller
+            </button>
+            <button class="nav-tab" onclick="showTab('chat')">
+                💬 AI Chat
+            </button>
+            <button class="nav-tab" onclick="showTab('analysis')">
+                📈 Analiz
+            </button>
+            <button class="nav-tab" onclick="showTab('closed')">
+                📋 Kapalı Sinyaller
+            </button>
+            <button class="nav-tab" onclick="showTab('auto-scan')">
+                ⚡ Otomatik Tarama
+            </button>
+            <button class="nav-tab" onclick="showTab('stats')">
+                📊 İstatistikler
+            </button>
+            <button class="nav-tab" onclick="showTab('learning')">
+                🎓 Öğrenme
+            </button>
+            <button class="nav-tab" onclick="showTab('training')">
+                📚 Eğitim
+            </button>
+        </div>
+
+        <!-- AI Sinyaller Tab -->
+        <div id="signals-tab" class="tab-content active">
+            <div class="content-card">
+                <div class="card-header">
+                    <h2>📊 Aktif AI Sinyalleri</h2>
+                    <button class="btn-primary" onclick="generateSignals()">Yeni Tarama</button>
+                </div>
+                <div class="card-content">
+                    <div id="signals-content" class="empty-state">
+                        <h3>Henüz aktif sinyal bulunmuyor</h3>
+                        <p>Yeni tarama yaparak sinyal üretebilirsiniz.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- AI Chat Tab -->
+        <div id="chat-tab" class="tab-content">
+            <div class="content-card">
+                <div class="card-header">
+                    <h2>💬 AI Trading Asistanı</h2>
+                </div>
+                <div class="chat-container">
+                    <div class="chat-messages" id="chat-messages">
+                        <div class="chat-message">
+                            <div class="message-avatar ai-avatar">AI</div>
+                            <div class="message-content">
+                                <div>Merhaba! Ben AI Trading Asistanınızım. Size trading konularında yardımcı olabilirim. Sorularınızı sorabilirsiniz.</div>
+                                <div class="message-time">Şimdi</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="chat-input-container">
+                        <input type="text" class="chat-input" id="chat-input" placeholder="Sorunuzu yazın..." onkeypress="handleChatKeyPress(event)">
+                        <button class="chat-send-btn" onclick="sendChatMessage()">Gönder</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Analiz Tab -->
+        <div id="analysis-tab" class="tab-content">
+            <div class="content-card">
+                <div class="card-header">
+                    <h2>📈 Piyasa Analizi</h2>
+                </div>
+                <div class="card-content">
+                    <div class="empty-state">
+                        <h3>Piyasa analizi yakında gelecek</h3>
+                        <p>Detaylı teknik analiz araçları geliştiriliyor.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Kapalı Sinyaller Tab -->
+        <div id="closed-tab" class="tab-content">
+            <div class="content-card">
+                <div class="card-header">
+                    <h2>📋 Kapalı Sinyaller</h2>
+                </div>
+                <div class="card-content">
+                    <div id="closed-signals-content" class="empty-state">
+                        <h3>Henüz kapalı sinyal bulunmuyor</h3>
+                        <p>Tamamlanan işlemler burada görünecektir.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Otomatik Tarama Tab -->
+        <div id="auto-scan-tab" class="tab-content">
+            <div class="content-card">
+                <div class="card-header">
+                    <h2>⚡ Otomatik Tarama Sistemi</h2>
+                </div>
+                <div class="card-content">
+                    <div id="auto-scan-content">
+                        <div class="training-stats">
+                            <div class="stat-item">
+                                <div class="stat-value" id="scan-status">Durduruldu</div>
+                                <div class="stat-label">Durum</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value" id="scan-count">0</div>
+                                <div class="stat-label">Toplam Tarama</div>
+                            </div>
+                        </div>
+                        <div style="text-align: center; margin-top: 2rem;">
+                            <button class="btn-primary" id="auto-scan-btn" onclick="toggleAutoScan()">Otomatik Taramayı Başlat</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- İstatistikler Tab -->
+        <!-- İstatistikler Tab - GELİŞMİŞ VERSİYON -->
+        <div id="stats-tab" class="tab-content">
+            <!-- Genel Özet Kartları -->
+            <div class="stats-overview">
+                <div class="stat-card profit">
+                    <div class="stat-icon">💰</div>
+                    <div class="stat-info">
+                        <div class="stat-value" id="total-pnl-enhanced">$0.00</div>
+                        <div class="stat-label">Toplam PnL</div>
+                        <div class="stat-change" id="pnl-change">+0.00%</div>
+                    </div>
+                </div>
+                
+                <div class="stat-card signals">
+                    <div class="stat-icon">📊</div>
+                    <div class="stat-info">
+                        <div class="stat-value" id="active-signals-enhanced">0</div>
+                        <div class="stat-label">Aktif Sinyaller</div>
+                        <div class="stat-change" id="signals-change">0 yeni</div>
+                    </div>
+                </div>
+                
+                <div class="stat-card success">
+                    <div class="stat-icon">🎯</div>
+                    <div class="stat-info">
+                        <div class="stat-value" id="success-rate-enhanced">0%</div>
+                        <div class="stat-label">Başarı Oranı</div>
+                        <div class="stat-change" id="success-change">0% değişim</div>
+                    </div>
+                </div>
+                
+                <div class="stat-card confidence">
+                    <div class="stat-icon">🔥</div>
+                    <div class="stat-info">
+                        <div class="stat-value" id="avg-confidence">0%</div>
+                        <div class="stat-label">Ortalama Güven</div>
+                        <div class="stat-change" id="confidence-change">Yüksek</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Performans Analizi -->
+            <div class="content-card">
+                <div class="card-header">
+                    <h2>🏆 Performans Analizi</h2>
+                    <div class="filter-buttons">
+                        <button class="filter-btn active" onclick="filterPerformance('all')">Tümü</button>
+                        <button class="filter-btn" onclick="filterPerformance('profitable')">Karlı</button>
+                        <button class="filter-btn" onclick="filterPerformance('losing')">Zararlı</button>
+                        <button class="filter-btn" onclick="filterPerformance('neutral')">Nötr</button>
+                    </div>
+                </div>
+                <div class="card-content">
+                    <!-- En İyi Performanslar -->
+                    <div class="performance-section">
+                        <h3>🥇 En İyi Performanslar</h3>
+                        <div id="top-performers" class="performance-list">
+                            <!-- Dinamik içerik -->
+                        </div>
+                    </div>
+                    
+                    <!-- En Kötü Performanslar -->
+                    <div class="performance-section">
+                        <h3>📉 Dikkat Gereken Pozisyonlar</h3>
+                        <div id="worst-performers" class="performance-list">
+                            <!-- Dinamik içerik -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Detaylı Sinyal Analizi -->
+            <div class="content-card">
+                <div class="card-header">
+                    <h2>📋 Detaylı Sinyal Analizi</h2>
+                    <div class="analysis-controls">
+                        <select id="sort-signals" onchange="sortSignals()">
+                            <option value="pnl">PnL'ye göre</option>
+                            <option value="confidence">Güven seviyesine göre</option>
+                            <option value="time">Zamana göre</option>
+                            <option value="symbol">Coin'e göre</option>
+                        </select>
+                        <button class="btn-secondary" onclick="exportSignals()">📊 Rapor İndir</button>
+                    </div>
+                </div>
+                <div class="card-content">
+                    <div class="signals-table-container">
+                        <table id="detailed-signals-table" class="signals-table">
+                            <thead>
+                                <tr>
+                                    <th>Coin</th>
+                                    <th>Yön</th>
+                                    <th>PnL %</th>
+                                    <th>PnL USD</th>
+                                    <th>Giriş</th>
+                                    <th>Güncel</th>
+                                    <th>Güven</th>
+                                    <th>Durum</th>
+                                </tr>
+                            </thead>
+                            <tbody id="signals-table-body">
+                                <!-- Dinamik içerik -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Güven Seviyesi Analizi -->
+            <div class="content-card">
+                <div class="card-header">
+                    <h2>🎯 Güven Seviyesi Analizi</h2>
+                </div>
+                <div class="card-content">
+                    <div class="confidence-analysis">
+                        <div class="confidence-group">
+                            <div class="confidence-header">
+                                <h4>🔥 Yüksek Güven (≥90%)</h4>
+                                <span id="high-confidence-count" class="confidence-count">0</span>
+                            </div>
+                            <div class="confidence-stats">
+                                <div class="confidence-stat">
+                                    <span>Ortalama PnL:</span>
+                                    <span id="high-confidence-pnl">0.00%</span>
+                                </div>
+                                <div id="high-confidence-signals" class="confidence-signals">
+                                    <!-- Dinamik içerik -->
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="confidence-group">
+                            <div class="confidence-header">
+                                <h4>⚡ Orta Güven (80-89%)</h4>
+                                <span id="medium-confidence-count" class="confidence-count">0</span>
+                            </div>
+                            <div class="confidence-stats">
+                                <div class="confidence-stat">
+                                    <span>Ortalama PnL:</span>
+                                    <span id="medium-confidence-pnl">0.00%</span>
+                                </div>
+                                <div id="medium-confidence-signals" class="confidence-signals">
+                                    <!-- Dinamik içerik -->
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="confidence-group">
+                            <div class="confidence-header">
+                                <h4>⚠️ Düşük Güven (<80%)</h4>
+                                <span id="low-confidence-count" class="confidence-count">0</span>
+                            </div>
+                            <div class="confidence-stats">
+                                <div class="confidence-stat">
+                                    <span>Ortalama PnL:</span>
+                                    <span id="low-confidence-pnl">0.00%</span>
+                                </div>
+                                <div id="low-confidence-signals" class="confidence-signals">
+                                    <!-- Dinamik içerik -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sektör Analizi -->
+            <div class="content-card">
+                <div class="card-header">
+                    <h2>🏢 Sektör Performans Analizi</h2>
+                </div>
+                <div class="card-content">
+                    <div class="sector-analysis">
+                        <div class="sector-group">
+                            <h4>🪙 Layer 1 Coinler</h4>
+                            <div id="layer1-performance" class="sector-performance">
+                                <!-- Dinamik içerik -->
+                            </div>
+                        </div>
+                        
+                        <div class="sector-group">
+                            <h4>🎭 Meme Coinler</h4>
+                            <div id="meme-performance" class="sector-performance">
+                                <!-- Dinamik içerik -->
+                            </div>
+                        </div>
+                        
+                        <div class="sector-group">
+                            <h4>🔄 DeFi Tokenları</h4>
+                            <div id="defi-performance" class="sector-performance">
+                                <!-- Dinamik içerik -->
+                            </div>
+                        </div>
+                        
+                        <div class="sector-group">
+                            <h4>🤖 AI Tokenları</h4>
+                            <div id="ai-performance" class="sector-performance">
+                                <!-- Dinamik içerik -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Risk Analizi -->
+            <div class="content-card">
+                <div class="card-header">
+                    <h2>⚠️ Risk Analizi</h2>
+                </div>
+                <div class="card-content">
+                    <div class="risk-analysis">
+                        <div class="risk-alerts">
+                            <div id="high-risk-signals" class="risk-section">
+                                <h4>🚨 Yüksek Risk Sinyalleri</h4>
+                                <div class="risk-content">
+                                    <!-- Stop-loss'a yakın pozisyonlar -->
+                                </div>
+                            </div>
+                            
+                            <div id="profit-opportunities" class="risk-section">
+                                <h4>💎 Kar Fırsatları</h4>
+                                <div class="risk-content">
+                                    <!-- TP seviyelerine yakın pozisyonlar -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Öğrenme Tab -->
+        <div id="learning-tab" class="tab-content">
+            <div class="content-card">
+                <div class="card-header">
+                    <h2>🎓 AI Öğrenme Merkezi</h2>
+                </div>
+                <div class="card-content">
+                    <div class="training-grid">
+                        <div class="training-card">
+                            <h3>📊 Öğrenme İlerlemesi</h3>
+                            <div class="training-stats">
+                                <div class="stat-item">
+                                    <div class="stat-value">0</div>
+                                    <div class="stat-label">Toplam Etkileşim</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-value">0</div>
+                                    <div class="stat-label">Öğrenilen Konu</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-value">0%</div>
+                                    <div class="stat-label">Başarı Oranı</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-value">0</div>
+                                    <div class="stat-label">Aktif Gün</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="training-card">
+                            <h3>🌐 Web Link Eğitimi</h3>
+                            <div class="training-form">
+                                <div class="form-group">
+                                    <label class="form-label">Eğitim Linki</label>
+                                    <input type="url" class="form-input" placeholder="https://example.com/trading-guide">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Açıklama</label>
+                                    <textarea class="form-textarea" placeholder="Bu link hangi konuda eğitim veriyor?"></textarea>
+                                </div>
+                                <button class="btn-primary">Link Ekle</button>
+                            </div>
+                        </div>
+                        
+                        <div class="training-card">
+                            <h3>📄 PDF Analizi</h3>
+                            <div class="training-form">
+                                <div class="form-group">
+                                    <label class="form-label">PDF Dosyası</label>
+                                    <input type="file" class="form-input" accept=".pdf">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Konu Başlığı</label>
+                                    <input type="text" class="form-input" placeholder="Teknik Analiz, Risk Yönetimi vb.">
+                                </div>
+                                <button class="btn-primary">PDF Yükle</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="learning-suggestions">
+                        <h4>🎯 Önerilen Öğrenme Konuları</h4>
+                        <ul>
+                            <li>Daha fazla soru sorarak AI'dan maksimum fayda sağlayın</li>
+                            <li>Farklı trading konularında sorular sorarak bilginizi genişletin</li>
+                            <li>Grafik resimleri yükleyerek görsel analiz deneyimi yaşayın</li>
+                            <li>Risk yönetimi konusunda sorular sorarak güvenli trading öğrenin</li>
+                            <li>Chart pattern'leri hakkında sorular sorarak teknik analiz bilginizi artırın</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Eğitim Tab -->
+        <div id="training-tab" class="tab-content">
+            <div class="content-card">
+                <div class="card-header">
+                    <h2>📚 AI Eğitim Merkezi</h2>
+                </div>
+                <div class="card-content">
+                    <div class="training-grid">
+                        <div class="training-card">
+                            <h3>📈 Pattern Eğitimi</h3>
+                            <div class="training-form">
+                                <div class="form-group">
+                                    <label class="form-label">Pattern Türü</label>
+                                    <select class="form-select">
+                                        <option>Head & Shoulders</option>
+                                        <option>Double Top</option>
+                                        <option>Double Bottom</option>
+                                        <option>Triangle</option>
+                                        <option>Cup & Handle</option>
+                                        <option>Flag</option>
+                                        <option>Pennant</option>
+                                        <option>Wedge</option>
+                                        <option>Channel</option>
+                                        <option>Support/Resistance</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Coin Çifti</label>
+                                    <input type="text" class="form-input" placeholder="BTC/USDT">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Zaman Dilimi</label>
+                                    <select class="form-select">
+                                        <option>1 dakika</option>
+                                        <option>5 dakika</option>
+                                        <option>15 dakika</option>
+                                        <option>1 saat</option>
+                                        <option>4 saat</option>
+                                        <option>1 gün</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Pattern Sonucu</label>
+                                    <select class="form-select">
+                                        <option>Başarılı</option>
+                                        <option>Kısmi Başarılı</option>
+                                        <option>Başarısız</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Market Durumu</label>
+                                    <select class="form-select">
+                                        <option>Trendli</option>
+                                        <option>Yatay</option>
+                                        <option>Volatil</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Grafik Resmi</label>
+                                    <input type="file" class="form-input" accept="image/*">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Fiyat Verileri</label>
+                                    <input type="text" class="form-input" placeholder="Giriş, TP1, TP2, SL fiyatları">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Notlar</label>
+                                    <textarea class="form-textarea" placeholder="Bu pattern hakkında önemli notlarınız..."></textarea>
+                                </div>
+                                <button class="btn-primary">Eğitim Verisi Ekle</button>
+                            </div>
+                        </div>
+                        
+                        <div class="training-card">
+                            <h3>📊 Eğitim İstatistikleri</h3>
+                            <div class="training-stats">
+                                <div class="stat-item">
+                                    <div class="stat-value">0</div>
+                                    <div class="stat-label">Toplam Eğitim</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-value">0</div>
+                                    <div class="stat-label">Başarılı Pattern</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-value">0%</div>
+                                    <div class="stat-label">Öğrenme Oranı</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-value">0</div>
+                                    <div class="stat-label">Farklı Coin</div>
+                                </div>
+                            </div>
+                            
+                            <div style="margin-top: 1.5rem;">
+                                <h4 style="margin-bottom: 1rem; color: #333;">📈 Son Eğitimler</h4>
+                                <div style="font-size: 0.9rem; color: #666; text-align: center; padding: 2rem;">
+                                    Henüz eğitim verisi eklenmemiş
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentTab = 'signals';
+        let autoScanActive = false;
+
+        // Tab switching
+        function showTab(tabName) {
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.nav-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Show selected tab
+            document.getElementById(tabName + '-tab').classList.add('active');
+            event.target.classList.add('active');
+            currentTab = tabName;
+            
+            // Load tab-specific data
+            if (tabName === 'signals') {
+                loadSignals();
+            } else if (tabName === 'closed') {
+                loadClosedSignals();
+            } else if (tabName === 'stats') {
+                loadStats();
+            } else if (tabName === 'auto-scan') {
+                loadAutoScanStatus();
+            }
+        }
+
+        // API functions
+        async function loadSignals() {
+            try {
+                const response = await fetch('/api/signals');
+                const data = await response.json();
+                
+                if (data.success && data.signals && data.signals.length > 0) {
+                    displaySignals(data.signals);
+                } else {
+                    document.getElementById('signals-content').innerHTML = `
+                        <div class="empty-state">
+                            <h3>Henüz aktif sinyal bulunmuyor</h3>
+                            <p>Yeni tarama yaparak sinyal üretebilirsiniz.</p>
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                console.error('Sinyal yükleme hatası:', error);
+            }
+        }
+
+        async function loadClosedSignals() {
+            try {
+                const response = await fetch('/api/signals/history');
+                const data = await response.json();
+                
+                if (data.success && data.history && data.history.length > 0) {
+                    displayClosedSignals(data.history);
+                } else {
+                    document.getElementById('closed-signals-content').innerHTML = `
+                        <div class="empty-state">
+                            <h3>Henüz kapalı sinyal bulunmuyor</h3>
+                            <p>Tamamlanan işlemler burada görünecektir.</p>
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                console.error('Kapalı sinyal yükleme hatası:', error);
+            }
+        }
+
+        async function loadStats() {
+            try {
+                const response = await fetch('/api/health');
+                const data = await response.json();
+                
+                if (data.success) {
+                    document.getElementById('total-signals').textContent = data.total_signals || 0;
+                    document.getElementById('success-rate').textContent = data.success_rate || '0%';
+                    document.getElementById('total-pnl').textContent = data.total_pnl || '$0.00';
+                    document.getElementById('active-signals-stat').textContent = data.active_signals || 0;
+                }
+            } catch (error) {
+                console.error('İstatistik yükleme hatası:', error);
+            }
+        }
+
+        async function loadAutoScanStatus() {
+            try {
+                const response = await fetch('/api/auto-scan/status');
+                const data = await response.json();
+                
+                if (data.success) {
+                    autoScanActive = data.active;
+                    document.getElementById('scan-status').textContent = data.active ? 'Aktif' : 'Durduruldu';
+                    document.getElementById('scan-count').textContent = data.scan_count || 0;
+                    document.getElementById('auto-scan-btn').textContent = data.active ? 'Otomatik Taramayı Durdur' : 'Otomatik Taramayı Başlat';
+                }
+            } catch (error) {
+                console.error('Otomatik tarama durumu yükleme hatası:', error);
+            }
+        }
+
+        function displaySignals(signals) {
+            const content = signals.map(signal => `
+                <div class="signal-card">
+                    <div class="signal-header">
+                        <div class="signal-pair">${signal.coin_symbol || signal.symbol || signal.coin_id || 'Unknown'}</div>
+                        <span class="signal-direction ${signal.direction}">
+                            ${signal.direction}
+                        </span>
+                    </div>
+                    <div class="signal-details">
+                        <div class="signal-detail">
+                            <strong>Giriş:</strong>
+                            $${signal.entry_price || signal.current_price}
+                        </div>
+                        <div class="signal-detail">
+                            <strong>TP1:</strong>
+                            $${signal.tp1_price || 'N/A'}
+                        </div>
+                        <div class="signal-detail">
+                            <strong>TP2:</strong>
+                            $${signal.tp2_price || 'N/A'}
+                        </div>
+                        <div class="signal-detail">
+                            <strong>SL:</strong>
+                            $${signal.sl_price || 'N/A'}
+                        </div>
+                        <div class="signal-detail">
+                            <strong>PnL:</strong>
+                            <span class="${(signal.pnl_percentage || 0) >= 0 ? 'pnl-positive' : 'pnl-negative'}">
+                                ${(signal.pnl_percentage || 0).toFixed(2)}%
+                            </span>
+                        </div>
+                        <div class="signal-detail">
+                            <strong>Süre:</strong>
+                            ${signal.duration || 'N/A'}
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+            
+            document.getElementById('signals-content').innerHTML = content;
+        }
+
+        function displayClosedSignals(history) {
+            const content = history.map(signal => `
+                <div class="signal-card">
+                    <div class="signal-header">
+                        <div class="signal-pair">${signal.symbol || signal.coin_id}</div>
+                        <span class="signal-direction ${signal.direction}">
+                            ${signal.direction}
+                        </span>
+                    </div>
+                    <div class="signal-details">
+                        <div class="signal-detail">
+                            <strong>Giriş:</strong>
+                            $${signal.entry_price}
+                        </div>
+                        <div class="signal-detail">
+                            <strong>Çıkış:</strong>
+                            $${signal.exit_price}
+                        </div>
+                        <div class="signal-detail">
+                            <strong>PnL:</strong>
+                            <span class="${(signal.pnl_percentage || 0) >= 0 ? 'pnl-positive' : 'pnl-negative'}">
+                                ${(signal.pnl_percentage || 0).toFixed(2)}%
+                            </span>
+                        </div>
+                        <div class="signal-detail">
+                            <strong>Durum:</strong>
+                            ${signal.status || signal.close_reason}
+                        </div>
+                        <div class="signal-detail">
+                            <strong>Süre:</strong>
+                            ${signal.duration || 'N/A'}
+                        </div>
+                        <div class="signal-detail">
+                            <strong>Kapatılma:</strong>
+                            ${signal.closed_at ? new Date(signal.closed_at).toLocaleString('tr-TR') : 'N/A'}
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+            
+            document.getElementById('closed-signals-content').innerHTML = content;
+        }
+
+        async function generateSignals() {
+            try {
+                const response = await fetch('/api/signals/generate', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({})
+                });
+                const data = await response.json();
+                
+                if (data.success) {
+                    loadSignals();
+                    loadStats();
+                }
+            } catch (error) {
+                console.error('Sinyal üretme hatası:', error);
+            }
+        }
+
+        async function toggleAutoScan() {
+            try {
+                const endpoint = autoScanActive ? '/api/auto-scan/stop' : '/api/auto-scan/start';
+                const response = await fetch(endpoint, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({})
+                });
+                const data = await response.json();
+                
+                if (data.success) {
+                    loadAutoScanStatus();
+                }
+            } catch (error) {
+                console.error('Otomatik tarama toggle hatası:', error);
+            }
+        }
+
+        // Chat functions
+        function handleChatKeyPress(event) {
+            if (event.key === 'Enter') {
+                sendChatMessage();
+            }
+        }
+
+        function sendChatMessage() {
+            const input = document.getElementById('chat-input');
+            const message = input.value.trim();
+            
+            if (message) {
+                addChatMessage('user', message);
+                input.value = '';
+                
+                // Simulate AI response
+                setTimeout(() => {
+                    const responses = [
+                        "Bu konuda size yardımcı olabilirim. Daha spesifik sorular sorabilirsiniz.",
+                        "Trading konularında deneyimli bir asistanım. Hangi konuda yardıma ihtiyacınız var?",
+                        "Risk yönetimi çok önemli. Bu konuda daha detaylı bilgi almak ister misiniz?",
+                        "Teknik analiz konusunda sorularınızı yanıtlayabilirim.",
+                        "Piyasa koşulları hakkında güncel bilgiler verebilirim.",
+                        "Pattern analizi konusunda size rehberlik edebilirim.",
+                        "Stop-loss ve take-profit seviyeleri hakkında bilgi verebilirim."
+                    ];
+                    const randomResponse = responses[Math.floor(Math.random() * responses.length)];
+                    addChatMessage('ai', randomResponse);
+                }, 1000);
+            }
+        }
+
+        function addChatMessage(sender, message) {
+            const messagesContainer = document.getElementById('chat-messages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'chat-message';
+            
+            const time = new Date().toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' });
+            
+            messageDiv.innerHTML = `
+                <div class="message-avatar ${sender}-avatar">${sender === 'user' ? 'U' : 'AI'}</div>
+                <div class="message-content">
+                    <div>${message}</div>
+                    <div class="message-time">${time}</div>
+                </div>
+            `;
+            
+            messagesContainer.appendChild(messageDiv);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+
+        async function refreshData() {
+            document.getElementById('last-update').textContent = new Date().toLocaleTimeString('tr-TR');
+            
+            try {
+                const response = await fetch('/api/health');
+                const data = await response.json();
+                
+                if (data.success) {
+                    document.getElementById('api-status').textContent = `Çalışıyor (${data.active_signals} aktif sinyal)`;
+                } else {
+                    document.getElementById('api-status').textContent = 'Hata';
+                }
+            } catch (error) {
+                document.getElementById('api-status').textContent = 'Bağlantı Hatası';
+            }
+            
+            // Refresh current tab data
+            if (currentTab === 'signals') {
+                loadSignals();
+            } else if (currentTab === 'closed') {
+                loadClosedSignals();
+            } else if (currentTab === 'stats') {
+                loadStats();
+            } else if (currentTab === 'auto-scan') {
+                loadAutoScanStatus();
+            }
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            refreshData();
+            
+            // Auto refresh every 30 seconds
+            setInterval(refreshData, 30000);
+        });
+
+        // GELİŞMİŞ İSTATİSTİKLER FONKSİYONLARI
+        let currentStatsData = null;
+
+        async function loadDetailedStats() {
+            try {
+                const response = await fetch('/api/stats/detailed');
+                const data = await response.json();
+                
+                if (data.success) {
+                    currentStatsData = data.stats;
+                    updateStatsOverview(data.stats.overview);
+                    updatePerformanceAnalysis(data.stats);
+                    updateDetailedSignalsTable(data.stats);
+                    updateConfidenceAnalysis(data.stats.confidence_analysis);
+                    updateSectorAnalysis(data.stats.sector_analysis);
+                    updateRiskAnalysis(data.stats.risk_analysis);
+                }
+            } catch (error) {
+                console.error('Detaylı istatistik yükleme hatası:', error);
+            }
+        }
+
+        function updateStatsOverview(overview) {
+            document.getElementById('total-pnl-enhanced').textContent = `$${overview.total_pnl.toFixed(2)}`;
+            document.getElementById('active-signals-enhanced').textContent = overview.active_signals;
+            document.getElementById('success-rate-enhanced').textContent = `${overview.success_rate.toFixed(1)}%`;
+            document.getElementById('avg-confidence').textContent = `${overview.avg_confidence.toFixed(0)}%`;
+            
+            // Değişim göstergelerini güncelle
+            const pnlChange = overview.total_pnl >= 0 ? `+${overview.total_pnl.toFixed(2)}` : overview.total_pnl.toFixed(2);
+            document.getElementById('pnl-change').textContent = `${pnlChange}%`;
+            document.getElementById('signals-change').textContent = `${overview.active_signals} aktif`;
+            
+            const confidenceLevel = overview.avg_confidence >= 90 ? 'Çok Yüksek' : 
+                                   overview.avg_confidence >= 80 ? 'Yüksek' : 'Orta';
+            document.getElementById('confidence-change').textContent = confidenceLevel;
+        }
+
+        function updatePerformanceAnalysis(stats) {
+            const topPerformers = document.getElementById('top-performers');
+            const worstPerformers = document.getElementById('worst-performers');
+            
+            // En iyi performanslar
+            topPerformers.innerHTML = stats.top_performers.slice(0, 5).map(signal => `
+                <div class="performance-item profit">
+                    <div>
+                        <strong>${signal.coin_symbol}</strong> ${signal.direction}
+                        <div style="font-size: 0.8rem; opacity: 0.8;">Güven: %${signal.confidence}</div>
+                    </div>
+                    <div style="text-align: right;">
+                        <div style="color: #10b981; font-weight: 600;">+${signal.pnl_percentage.toFixed(2)}%</div>
+                        <div style="font-size: 0.8rem;">$${signal.pnl_usd.toFixed(2)}</div>
+                    </div>
+                </div>
+            `).join('');
+            
+            // En kötü performanslar
+            worstPerformers.innerHTML = stats.worst_performers.slice(-5).map(signal => `
+                <div class="performance-item ${signal.pnl_percentage < 0 ? 'loss' : 'neutral'}">
+                    <div>
+                        <strong>${signal.coin_symbol}</strong> ${signal.direction}
+                        <div style="font-size: 0.8rem; opacity: 0.8;">Güven: %${signal.confidence}</div>
+                    </div>
+                    <div style="text-align: right;">
+                        <div style="color: ${signal.pnl_percentage < 0 ? '#ef4444' : '#6b7280'}; font-weight: 600;">
+                            ${signal.pnl_percentage.toFixed(2)}%
+                        </div>
+                        <div style="font-size: 0.8rem;">$${signal.pnl_usd.toFixed(2)}</div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function updateDetailedSignalsTable(stats) {
+            const tbody = document.getElementById('signals-table-body');
+            const allSignals = [...stats.top_performers, ...stats.worst_performers];
+            
+            tbody.innerHTML = allSignals.map(signal => `
+                <tr>
+                    <td><strong>${signal.coin_symbol}</strong></td>
+                    <td>
+                        <span class="signal-direction ${signal.direction.toLowerCase()}">
+                            ${signal.direction}
+                        </span>
+                    </td>
+                    <td style="color: ${signal.pnl_percentage >= 0 ? '#10b981' : '#ef4444'};">
+                        ${signal.pnl_percentage.toFixed(2)}%
+                    </td>
+                    <td style="color: ${signal.pnl_usd >= 0 ? '#10b981' : '#ef4444'};">
+                        $${signal.pnl_usd.toFixed(2)}
+                    </td>
+                    <td>$${signal.entry_price}</td>
+                    <td>$${signal.current_price}</td>
+                    <td>%${signal.confidence}</td>
+                    <td>
+                        <span class="status-badge ${signal.pnl_percentage >= 0 ? 'profit' : 'loss'}">
+                            ${signal.pnl_percentage >= 0 ? 'Karlı' : 'Zararlı'}
+                        </span>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function updateConfidenceAnalysis(confidenceData) {
+            // Yüksek güven
+            document.getElementById('high-confidence-count').textContent = confidenceData.high.count;
+            document.getElementById('high-confidence-pnl').textContent = `${confidenceData.high.avg_pnl.toFixed(2)}%`;
+            document.getElementById('high-confidence-signals').innerHTML = confidenceData.high.signals.map(s => `
+                <div class="confidence-signal-item">
+                    <span>${s.symbol}</span>
+                    <span style="color: ${s.pnl >= 0 ? '#10b981' : '#ef4444'};">${s.pnl.toFixed(2)}%</span>
+                </div>
+            `).join('');
+            
+            // Orta güven
+            document.getElementById('medium-confidence-count').textContent = confidenceData.medium.count;
+            document.getElementById('medium-confidence-pnl').textContent = `${confidenceData.medium.avg_pnl.toFixed(2)}%`;
+            document.getElementById('medium-confidence-signals').innerHTML = confidenceData.medium.signals.map(s => `
+                <div class="confidence-signal-item">
+                    <span>${s.symbol}</span>
+                    <span style="color: ${s.pnl >= 0 ? '#10b981' : '#ef4444'};">${s.pnl.toFixed(2)}%</span>
+                </div>
+            `).join('');
+            
+            // Düşük güven
+            document.getElementById('low-confidence-count').textContent = confidenceData.low.count;
+            document.getElementById('low-confidence-pnl').textContent = `${confidenceData.low.avg_pnl.toFixed(2)}%`;
+            document.getElementById('low-confidence-signals').innerHTML = confidenceData.low.signals.map(s => `
+                <div class="confidence-signal-item">
+                    <span>${s.symbol}</span>
+                    <span style="color: ${s.pnl >= 0 ? '#10b981' : '#ef4444'};">${s.pnl.toFixed(2)}%</span>
+                </div>
+            `).join('');
+        }
+
+        function updateSectorAnalysis(sectorData) {
+            const sectors = [
+                { key: 'layer1', element: 'layer1-performance' },
+                { key: 'meme', element: 'meme-performance' },
+                { key: 'defi', element: 'defi-performance' },
+                { key: 'ai', element: 'ai-performance' }
+            ];
+            
+            sectors.forEach(sector => {
+                const element = document.getElementById(sector.element);
+                const signals = sectorData[sector.key] || [];
+                
+                if (signals.length === 0) {
+                    element.innerHTML = '<div style="color: rgba(255,255,255,0.6); font-size: 0.8rem;">Bu sektörde aktif sinyal yok</div>';
+                } else {
+                    element.innerHTML = signals.map(signal => `
+                        <div class="sector-item">
+                            <span>${signal.coin_symbol} ${signal.direction}</span>
+                            <span style="color: ${signal.pnl_percentage >= 0 ? '#10b981' : '#ef4444'};">
+                                ${signal.pnl_percentage.toFixed(2)}%
+                            </span>
+                        </div>
+                    `).join('');
+                }
+            });
+        }
+
+        function updateRiskAnalysis(riskData) {
+            const highRiskElement = document.querySelector('#high-risk-signals .risk-content');
+            const profitOppsElement = document.querySelector('#profit-opportunities .risk-content');
+            
+            // Yüksek risk sinyalleri
+            if (riskData.high_risk.length === 0) {
+                highRiskElement.innerHTML = '<div style="color: rgba(255,255,255,0.6); font-size: 0.8rem;">Şu anda yüksek riskli sinyal yok</div>';
+            } else {
+                highRiskElement.innerHTML = riskData.high_risk.map(signal => `
+                    <div class="risk-item high-risk">
+                        <strong>${signal.coin_symbol}</strong> ${signal.direction}
+                        <div style="font-size: 0.8rem; margin-top: 0.25rem;">
+                            PnL: ${signal.pnl_percentage.toFixed(2)}% | Stop-loss'a yakın
+                        </div>
+                    </div>
+                `).join('');
+            }
+            
+            // Kar fırsatları
+            if (riskData.profit_opportunities.length === 0) {
+                profitOppsElement.innerHTML = '<div style="color: rgba(255,255,255,0.6); font-size: 0.8rem;">Şu anda TP\'ye yakın sinyal yok</div>';
+            } else {
+                profitOppsElement.innerHTML = riskData.profit_opportunities.map(signal => `
+                    <div class="risk-item opportunity">
+                        <strong>${signal.coin_symbol}</strong> ${signal.direction}
+                        <div style="font-size: 0.8rem; margin-top: 0.25rem;">
+                            PnL: ${signal.pnl_percentage.toFixed(2)}% | TP1'e yakın
+                        </div>
+                    </div>
+                `).join('');
+            }
+        }
+
+        function filterPerformance(type) {
+            // Filter butonlarını güncelle
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            // Filtreleme mantığı burada olacak
+            console.log('Filtreleme:', type);
+        }
+
+        function sortSignals() {
+            const sortBy = document.getElementById('sort-signals').value;
+            console.log('Sıralama:', sortBy);
+            // Sıralama mantığı burada olacak
+        }
+
+        async function exportSignals() {
+            try {
+                const response = await fetch('/api/stats/export');
+                const data = await response.json();
+                
+                if (data.success) {
+                    // CSV verilerini indirme linki oluştur
+                    const csvContent = data.csv_data.map(row => row.join(',')).join('\n');
+                    const blob = new Blob([csvContent], { type: 'text/csv' });
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = data.filename;
+                    a.click();
+                    window.URL.revokeObjectURL(url);
+                } else {
+                    alert('Export hatası: ' + data.error);
+                }
+            } catch (error) {
+                console.error('Export hatası:', error);
+                alert('Export işlemi başarısız oldu');
+            }
+        }
+
+        // İstatistikler sekmesi açıldığında detaylı verileri yükle
+        function showTab(tabName) {
+            // Mevcut showTab fonksiyonunu genişlet
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            document.querySelectorAll('.nav-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            document.getElementById(tabName + '-tab').classList.add('active');
+            event.target.classList.add('active');
+            
+            // İstatistikler sekmesi açıldığında detaylı verileri yükle
+            if (tabName === 'stats') {
+                loadDetailedStats();
+            }
+        }
+    </script>
+</body>
+</html>
+

@@ -1,0 +1,502 @@
+[
+  {
+    "id": "SPX_1755183777",
+    "coin_symbol": "SPX",
+    "coin_name": "SPX6900",
+    "direction": "SHORT",
+    "entry_price": 1.58,
+    "current_price": 1.56,
+    "confidence": 82,
+    "analysis": "SPX'nin mevcut piyasa yapısını derinlemesine inceledikten sonra düşüş potansiyeli gözlemliyorum.",
+    "timestamp": "2025-08-14T11:02:57.134792",
+    "status": "Aktif",
+    "pnl_percentage": 1.27,
+    "pnl_usd": 12.66,
+    "tp_levels": {
+      "tp1": 1.501,
+      "tp2": 1.3904,
+      "tp3": 1.264
+    },
+    "sl_level": 1.7064
+  },
+  {
+    "id": "PENGU_1755183777",
+    "coin_symbol": "PENGU",
+    "coin_name": "Pudgy Penguins",
+    "direction": "LONG",
+    "entry_price": 0.03376745,
+    "current_price": 0.03367978,
+    "confidence": 91,
+    "analysis": "PENGU için piyasa dinamiklerini analiz ettiğimde güçlü bir momentum birikimi fark ediyorum.",
+    "timestamp": "2025-08-14T11:02:57.134844",
+    "status": "Aktif",
+    "pnl_percentage": -0.26,
+    "pnl_usd": -2.6,
+    "tp_levels": {
+      "tp1": 0.035456,
+      "tp2": 0.03782,
+      "tp3": 0.040521
+    },
+    "sl_level": 0.031066
+  },
+  {
+    "id": "CRO_1755183777",
+    "coin_symbol": "CRO",
+    "coin_name": "Cronos",
+    "direction": "LONG",
+    "entry_price": 0.154518,
+    "current_price": 0.154853,
+    "confidence": 80,
+    "analysis": "CRO için kapsamlı teknik analiz sonucunda güçlü bir alım fırsatı tespit ettim.",
+    "timestamp": "2025-08-14T11:02:57.134868",
+    "status": "Aktif",
+    "pnl_percentage": 0.22,
+    "pnl_usd": 2.17,
+    "tp_levels": {
+      "tp1": 0.162244,
+      "tp2": 0.17306,
+      "tp3": 0.185422
+    },
+    "sl_level": 0.142157
+  },
+  {
+    "id": "ADA_1755183777",
+    "coin_symbol": "ADA",
+    "coin_name": "Cardano",
+    "direction": "LONG",
+    "entry_price": 0.925588,
+    "current_price": 0.949775,
+    "confidence": 82,
+    "analysis": "ADA için kapsamlı teknik analiz sonucunda güçlü bir alım fırsatı tespit ettim.",
+    "timestamp": "2025-08-14T11:02:57.134888",
+    "status": "Aktif",
+    "pnl_percentage": 2.61,
+    "pnl_usd": 26.13,
+    "tp_levels": {
+      "tp1": 0.971867,
+      "tp2": 1.036659,
+      "tp3": 1.110706
+    },
+    "sl_level": 0.851541
+  },
+  {
+    "id": "UNI_1755183777",
+    "coin_symbol": "UNI",
+    "coin_name": "Uniswap",
+    "direction": "SHORT",
+    "entry_price": 11.13,
+    "current_price": 11.02,
+    "confidence": 91,
+    "analysis": "UNI'nin mevcut piyasa yapısını derinlemesine inceledikten sonra düşüş potansiyeli gözlemliyorum.",
+    "timestamp": "2025-08-14T11:02:57.134910",
+    "status": "Aktif",
+    "pnl_percentage": 0.99,
+    "pnl_usd": 9.88,
+    "tp_levels": {
+      "tp1": 10.5735,
+      "tp2": 9.7944,
+      "tp3": 8.904
+    },
+    "sl_level": 12.0204
+  },
+  {
+    "id": "PEPE_1755183777",
+    "coin_symbol": "PEPE",
+    "coin_name": "Pepe",
+    "direction": "SHORT",
+    "entry_price": 1.131e-05,
+    "current_price": 1.112e-05,
+    "confidence": 80,
+    "analysis": "PEPE için piyasa dinamiklerini analiz ettiğimde güçlü bir momentum birikimi fark ediyorum.",
+    "timestamp": "2025-08-14T11:02:57.134935",
+    "status": "Aktif",
+    "pnl_percentage": 1.68,
+    "pnl_usd": 16.8,
+    "tp_levels": {
+      "tp1": 1.1e-05,
+      "tp2": 1e-05,
+      "tp3": 9e-06
+    },
+    "sl_level": 1.2e-05
+  },
+  {
+    "id": "BONK_1755183777",
+    "coin_symbol": "BONK",
+    "coin_name": "Bonk",
+    "direction": "LONG",
+    "entry_price": 2.46e-05,
+    "current_price": 2.437e-05,
+    "confidence": 82,
+    "analysis": "BONK için piyasa dinamiklerini analiz ettiğimde güçlü bir momentum birikimi fark ediyorum.",
+    "timestamp": "2025-08-14T11:02:57.134956",
+    "status": "Aktif",
+    "pnl_percentage": -0.93,
+    "pnl_usd": -9.35,
+    "tp_levels": {
+      "tp1": 2.6e-05,
+      "tp2": 2.8e-05,
+      "tp3": 3e-05
+    },
+    "sl_level": 2.3e-05
+  },
+  {
+    "id": "RENDER_1755183777",
+    "coin_symbol": "RENDER",
+    "coin_name": "Render",
+    "direction": "SHORT",
+    "entry_price": 3.9,
+    "current_price": 3.91,
+    "confidence": 85,
+    "analysis": "RENDER için kapsamlı teknik analiz sonucunda güçlü bir satım fırsatı tespit ettim.",
+    "timestamp": "2025-08-14T11:02:57.134990",
+    "status": "Aktif",
+    "pnl_percentage": -0.26,
+    "pnl_usd": -2.56,
+    "tp_levels": {
+      "tp1": 3.705,
+      "tp2": 3.432,
+      "tp3": 3.12
+    },
+    "sl_level": 4.212
+  },
+  {
+    "id": "TAO_1755183777",
+    "coin_symbol": "TAO",
+    "coin_name": "Bittensor",
+    "direction": "LONG",
+    "entry_price": 370.81,
+    "current_price": 378.39,
+    "confidence": 81,
+    "analysis": "TAO'nin mevcut piyasa yapısını derinlemesine inceledikten sonra yükseliş potansiyeli gözlemliyorum.",
+    "timestamp": "2025-08-14T11:02:57.135014",
+    "status": "Aktif",
+    "pnl_percentage": 2.04,
+    "pnl_usd": 20.44,
+    "tp_levels": {
+      "tp1": 389.3505,
+      "tp2": 415.3072,
+      "tp3": 444.972
+    },
+    "sl_level": 341.1452
+  },
+  {
+    "id": "ALGO_1755183777",
+    "coin_symbol": "ALGO",
+    "coin_name": "Algorand",
+    "direction": "SHORT",
+    "entry_price": 0.259865,
+    "current_price": 0.259774,
+    "confidence": 83,
+    "analysis": "ALGO için kapsamlı teknik analiz sonucunda güçlü bir satım fırsatı tespit ettim.",
+    "timestamp": "2025-08-14T11:02:57.135040",
+    "status": "Aktif",
+    "pnl_percentage": 0.04,
+    "pnl_usd": 0.35,
+    "tp_levels": {
+      "tp1": 0.246872,
+      "tp2": 0.228681,
+      "tp3": 0.207892
+    },
+    "sl_level": 0.280654
+  },
+  {
+    "id": "KCS_1755183777",
+    "coin_symbol": "KCS",
+    "coin_name": "KuCoin",
+    "direction": "LONG",
+    "entry_price": 13.22,
+    "current_price": 13.22,
+    "confidence": 84,
+    "analysis": "KCS'nin mevcut piyasa yapısını derinlemesine inceledikten sonra yükseliş potansiyeli gözlemliyorum.",
+    "timestamp": "2025-08-14T11:02:57.135060",
+    "status": "Aktif",
+    "pnl_percentage": 0,
+    "pnl_usd": 0,
+    "tp_levels": {
+      "tp1": 13.881,
+      "tp2": 14.8064,
+      "tp3": 15.864
+    },
+    "sl_level": 12.1624
+  },
+  {
+    "id": "KAS_1755183777",
+    "coin_symbol": "KAS",
+    "coin_name": "Kaspa",
+    "direction": "SHORT",
+    "entry_price": 0.093115,
+    "current_price": 0.093115,
+    "confidence": 94,
+    "analysis": "KAS'nin mevcut piyasa yapısını derinlemesine inceledikten sonra düşüş potansiyeli gözlemliyorum.",
+    "timestamp": "2025-08-14T11:02:57.135096",
+    "status": "Aktif",
+    "pnl_percentage": 0,
+    "pnl_usd": 0,
+    "tp_levels": {
+      "tp1": 0.088459,
+      "tp2": 0.081941,
+      "tp3": 0.074492
+    },
+    "sl_level": 0.100564
+  },
+  {
+    "id": "DOGE_1755184844",
+    "coin_symbol": "DOGE",
+    "coin_name": "Dogecoin",
+    "direction": "SHORT",
+    "entry_price": 0.227107,
+    "current_price": 0.231448,
+    "confidence": 81,
+    "analysis": "DOGE'nin mevcut piyasa yapısını derinlemesine inceledikten sonra düşüş potansiyeli gözlemliyorum.",
+    "timestamp": "2025-08-14T11:20:44.173801",
+    "status": "Aktif",
+    "pnl_percentage": -1.91,
+    "pnl_usd": -19.11,
+    "tp_levels": {
+      "tp1": 0.215752,
+      "tp2": 0.199854,
+      "tp3": 0.181686
+    },
+    "sl_level": 0.245276
+  },
+  {
+    "id": "FIL_1755184844",
+    "coin_symbol": "FIL",
+    "coin_name": "Filecoin",
+    "direction": "LONG",
+    "entry_price": 2.56,
+    "current_price": 2.52,
+    "confidence": 89,
+    "analysis": "FIL için kapsamlı teknik analiz sonucunda güçlü bir alım fırsatı tespit ettim.",
+    "timestamp": "2025-08-14T11:20:44.173850",
+    "status": "Aktif",
+    "pnl_percentage": -1.56,
+    "pnl_usd": -15.63,
+    "tp_levels": {
+      "tp1": 2.688,
+      "tp2": 2.8672,
+      "tp3": 3.072
+    },
+    "sl_level": 2.3552
+  },
+  {
+    "id": "LTC_1755184876",
+    "coin_symbol": "LTC",
+    "coin_name": "Litecoin",
+    "direction": "SHORT",
+    "entry_price": 123.62,
+    "current_price": 121.13,
+    "confidence": 89,
+    "analysis": "LTC için piyasa dinamiklerini analiz ettiğimde güçlü bir momentum birikimi fark ediyorum.",
+    "timestamp": "2025-08-14T11:21:16.495434",
+    "status": "Aktif",
+    "pnl_percentage": 2.01,
+    "pnl_usd": 20.14,
+    "tp_levels": {
+      "tp1": 117.439,
+      "tp2": 108.7856,
+      "tp3": 98.896
+    },
+    "sl_level": 133.5096
+  },
+  {
+    "id": "ETC_1755186214",
+    "coin_symbol": "ETC",
+    "coin_name": "Ethereum Classic",
+    "direction": "SHORT",
+    "entry_price": 22.55,
+    "current_price": 22.39,
+    "confidence": 88,
+    "analysis": "ETC için piyasa dinamiklerini analiz ettiğimde güçlü bir momentum birikimi fark ediyorum.",
+    "timestamp": "2025-08-14T11:43:34.310635",
+    "status": "Aktif",
+    "pnl_percentage": 0.71,
+    "pnl_usd": 7.1,
+    "tp_levels": {
+      "tp1": 21.4225,
+      "tp2": 19.844,
+      "tp3": 18.04
+    },
+    "sl_level": 24.354
+  },
+  {
+    "id": "WLD_1755186279",
+    "coin_symbol": "WLD",
+    "coin_name": "Worldcoin",
+    "direction": "LONG",
+    "entry_price": 1.023,
+    "current_price": 1.023,
+    "confidence": 94,
+    "analysis": "WLD'nin mevcut piyasa yapısını derinlemesine inceledikten sonra yükseliş potansiyeli gözlemliyorum.",
+    "timestamp": "2025-08-14T11:44:39.777719",
+    "status": "Aktif",
+    "pnl_percentage": 0,
+    "pnl_usd": 0,
+    "tp_levels": {
+      "tp1": 1.07415,
+      "tp2": 1.14576,
+      "tp3": 1.2276
+    },
+    "sl_level": 0.94116
+  },
+  {
+    "id": "XMR_1755247742",
+    "coin_symbol": "XMR",
+    "coin_name": "Monero",
+    "direction": "SHORT",
+    "entry_price": 242.53,
+    "current_price": 239.34,
+    "confidence": 95,
+    "analysis": "XMR için piyasa dinamiklerini analiz ettiğimde güçlü bir momentum birikimi fark ediyorum.",
+    "timestamp": "2025-08-15T04:49:02.462845",
+    "status": "Aktif",
+    "pnl_percentage": 1.32,
+    "pnl_usd": 13.15,
+    "tp_levels": {
+      "tp1": 230.4035,
+      "tp2": 213.4264,
+      "tp3": 194.024
+    },
+    "sl_level": 261.9324
+  },
+  {
+    "id": "NEAR_1755247742",
+    "coin_symbol": "NEAR",
+    "coin_name": "NEAR Protocol",
+    "direction": "LONG",
+    "entry_price": 2.81,
+    "current_price": 2.78,
+    "confidence": 91,
+    "analysis": "NEAR'nin mevcut piyasa yapısını derinlemesine inceledikten sonra yükseliş potansiyeli gözlemliyorum.",
+    "timestamp": "2025-08-15T04:49:02.462894",
+    "status": "Aktif",
+    "pnl_percentage": -1.07,
+    "pnl_usd": -10.68,
+    "tp_levels": {
+      "tp1": 2.9505,
+      "tp2": 3.1472,
+      "tp3": 3.372
+    },
+    "sl_level": 2.5852
+  },
+  {
+    "id": "ICP_1755247742",
+    "coin_symbol": "ICP",
+    "coin_name": "Internet Computer",
+    "direction": "SHORT",
+    "entry_price": 5.58,
+    "current_price": 5.51,
+    "confidence": 85,
+    "analysis": "ICP'nin mevcut piyasa yapısını derinlemesine inceledikten sonra düşüş potansiyeli gözlemliyorum.",
+    "timestamp": "2025-08-15T04:49:02.462919",
+    "status": "Aktif",
+    "pnl_percentage": 1.25,
+    "pnl_usd": 12.54,
+    "tp_levels": {
+      "tp1": 5.301,
+      "tp2": 4.9104,
+      "tp3": 4.464
+    },
+    "sl_level": 6.0264
+  },
+  {
+    "id": "LEO_1755247742",
+    "coin_symbol": "LEO",
+    "coin_name": "LEO Token",
+    "direction": "SHORT",
+    "entry_price": 9.68,
+    "current_price": 9.19,
+    "confidence": 95,
+    "analysis": "LEO'nin mevcut piyasa yapısını derinlemesine inceledikten sonra düşüş potansiyeli gözlemliyorum.",
+    "timestamp": "2025-08-15T04:49:02.462949",
+    "status": "Aktif",
+    "pnl_percentage": 5.06,
+    "pnl_usd": 50.62,
+    "tp_levels": {
+      "tp1": 9.196,
+      "tp2": 8.5184,
+      "tp3": 7.744
+    },
+    "sl_level": 10.4544
+  },
+  {
+    "id": "AAVE_1755247742",
+    "coin_symbol": "AAVE",
+    "coin_name": "Aave",
+    "direction": "LONG",
+    "entry_price": 312.85,
+    "current_price": 313.16,
+    "confidence": 78,
+    "analysis": "AAVE'nin mevcut piyasa yapısını derinlemesine inceledikten sonra yükseliş potansiyeli gözlemliyorum.",
+    "timestamp": "2025-08-15T04:49:02.462981",
+    "status": "Aktif",
+    "pnl_percentage": 0.1,
+    "pnl_usd": 0.99,
+    "tp_levels": {
+      "tp1": 328.4925,
+      "tp2": 350.392,
+      "tp3": 375.42
+    },
+    "sl_level": 287.822
+  },
+  {
+    "id": "SHIB_1755248343",
+    "coin_symbol": "SHIB",
+    "coin_name": "Shiba Inu",
+    "direction": "LONG",
+    "entry_price": 1.304e-05,
+    "current_price": 1.298e-05,
+    "confidence": 75,
+    "analysis": "SHIB'nin mevcut piyasa yapısını derinlemesine inceledikten sonra yükseliş potansiyeli gözlemliyorum.",
+    "timestamp": "2025-08-15T04:59:03.168659",
+    "status": "Aktif",
+    "pnl_percentage": -0.46,
+    "pnl_usd": -4.6,
+    "tp_levels": {
+      "tp1": 1.4e-05,
+      "tp2": 1.5e-05,
+      "tp3": 1.6e-05
+    },
+    "sl_level": 1.2e-05
+  },
+  {
+    "id": "LINK_1755252757",
+    "coin_symbol": "LINK",
+    "coin_name": "Chainlink",
+    "direction": "SHORT",
+    "entry_price": 22.35,
+    "current_price": 22.36,
+    "confidence": 83,
+    "analysis": "LINK için kapsamlı teknik analiz sonucunda güçlü bir satım fırsatı tespit ettim.",
+    "timestamp": "2025-08-15T06:12:37.734319",
+    "status": "Aktif",
+    "pnl_percentage": -0.04,
+    "pnl_usd": -0.45,
+    "tp_levels": {
+      "tp1": 21.2325,
+      "tp2": 19.668,
+      "tp3": 17.88
+    },
+    "sl_level": 24.138
+  },
+  {
+    "id": "DOT_1755252757",
+    "coin_symbol": "DOT",
+    "coin_name": "Polkadot",
+    "direction": "LONG",
+    "entry_price": 4.0,
+    "current_price": 4.0,
+    "confidence": 91,
+    "analysis": "DOT'nin mevcut piyasa yapısını derinlemesine inceledikten sonra yükseliş potansiyeli gözlemliyorum.",
+    "timestamp": "2025-08-15T06:12:37.734364",
+    "status": "Aktif",
+    "pnl_percentage": 0.0,
+    "pnl_usd": 0.0,
+    "tp_levels": {
+      "tp1": 4.2,
+      "tp2": 4.48,
+      "tp3": 4.8
+    },
+    "sl_level": 3.68
+  }
+]

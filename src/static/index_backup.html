@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crypto AI Trader - Senkronize Versiyon</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .status {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            color: white;
+        }
+        
+        .tabs {
+            display: flex;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 10px;
+            margin-bottom: 20px;
+            gap: 10px;
+        }
+        
+        .tab {
+            flex: 1;
+            padding: 15px;
+            text-align: center;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: white;
+            font-weight: 500;
+        }
+        
+        .tab.active {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+        
+        .content {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+        
+        .signal-card {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-left: 4px solid #007bff;
+            transition: transform 0.2s ease;
+        }
+        
+        .signal-card:hover {
+            transform: translateY(-2px);
+        }
+        
+        .signal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .signal-pair {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #333;
+        }
+        
+        .signal-direction {
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+        
+        .long {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .short {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        
+        .signal-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+        }
+        
+        .detail-item {
+            text-align: center;
+        }
+        
+        .detail-label {
+            font-size: 0.8rem;
+            color: #666;
+            margin-bottom: 5px;
+        }
+        
+        .detail-value {
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+        
+        .positive {
+            color: #28a745;
+        }
+        
+        .negative {
+            color: #dc3545;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+        
+        .stat-card {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .stat-label {
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+        }
+        
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        
+        .refresh-btn {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            margin: 10px;
+        }
+        
+        .refresh-btn:hover {
+            background: #0056b3;
+        }
+        
+        @media (max-width: 768px) {
+            .tabs {
+                flex-direction: column;
+            }
+            
+            .signal-details {
+                grid-template-columns: 1fr 1fr;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚀 Crypto AI Trader</h1>
+            <p>Senkronize Versiyon - Tüm Cihazlarda Aynı Veri</p>
+        </div>
+        
+        <div class="status">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                    <strong>API Durumu:</strong> <span id="apiStatus">Kontrol ediliyor...</span>
+                </div>
+                <div>
+                    <strong>Son Güncelleme:</strong> <span id="lastUpdate">-</span>
+                </div>
+                <button class="refresh-btn" onclick="refreshData()">🔄 Yenile</button>
+            </div>
+        </div>
+        
+        <div class="tabs">
+            <div class="tab active" onclick="showTab('signals')">📊 Aktif Sinyaller</div>
+            <div class="tab" onclick="showTab('closed')">📋 Kapalı Sinyaller</div>
+            <div class="tab" onclick="showTab('stats')">📈 İstatistikler</div>
+        </div>
+        
+        <div class="content">
+            <div id="signals-content">
+                <div class="loading">Sinyaller yükleniyor...</div>
+            </div>
+            
+            <div id="closed-content" style="display: none;">
+                <div class="loading">Kapalı sinyaller yükleniyor...</div>
+            </div>
+            
+            <div id="stats-content" style="display: none;">
+                <div class="loading">İstatistikler yükleniyor...</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentTab = 'signals';
+        let refreshInterval;
+        
+        // API Base URL
+        const API_BASE = window.location.origin;
+        
+        // Sayfa yüklendiğinde başlat
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🚀 Senkronize sayfa başlatılıyor...');
+            loadData();
+            startAutoRefresh();
+        });
+        
+        // Otomatik yenileme başlat
+        function startAutoRefresh() {
+            refreshInterval = setInterval(() => {
+                loadData();
+            }, 30000); // 30 saniyede bir yenile
+        }
+        
+        // Veri yükleme
+        async function loadData() {
+            try {
+                updateLastUpdate();
+                
+                if (currentTab === 'signals') {
+                    await loadSignals();
+                } else if (currentTab === 'closed') {
+                    await loadClosedSignals();
+                } else if (currentTab === 'stats') {
+                    await loadStats();
+                }
+                
+                await checkAPIStatus();
+                
+            } catch (error) {
+                console.error('Veri yükleme hatası:', error);
+                showError('Veri yüklenirken hata oluştu: ' + error.message);
+            }
+        }
+        
+        // API durumu kontrol
+        async function checkAPIStatus() {
+            try {
+                const response = await fetch(`${API_BASE}/api/health`);
+                const data = await response.json();
+                
+                document.getElementById('apiStatus').textContent = 
+                    `✅ Çalışıyor (${data.active_signals} aktif sinyal)`;
+                    
+            } catch (error) {
+                document.getElementById('apiStatus').textContent = '❌ Bağlantı hatası';
+            }
+        }
+        
+        // Aktif sinyaller yükle
+        async function loadSignals() {
+            try {
+                const response = await fetch(`${API_BASE}/api/signals`);
+                const data = await response.json();
+                
+                const content = document.getElementById('signals-content');
+                
+                if (data.signals && data.signals.length > 0) {
+                    content.innerHTML = `
+                        <h2>Aktif Sinyaller (${data.signals.length})</h2>
+                        ${data.signals.map(signal => createSignalCard(signal)).join('')}
+                    `;
+                } else {
+                    content.innerHTML = `
+                        <div style="text-align: center; padding: 40px; color: #666;">
+                            <h3>Henüz aktif sinyal bulunmuyor</h3>
+                            <p>Yeni tarama yaparak sinyal üretebilirsiniz.</p>
+                        </div>
+                    `;
+                }
+                
+            } catch (error) {
+                showError('Sinyaller yüklenemedi: ' + error.message);
+            }
+        }
+        
+        // Kapalı sinyaller yükle
+        async function loadClosedSignals() {
+            try {
+                const response = await fetch(`${API_BASE}/api/signals/history`);
+                const data = await response.json();
+                
+                const content = document.getElementById('closed-content');
+                
+                if (data.signals && data.signals.length > 0) {
+                    content.innerHTML = `
+                        <h2>Kapalı Sinyaller (${data.signals.length})</h2>
+                        ${data.signals.map(signal => createSignalCard(signal, true)).join('')}
+                    `;
+                } else {
+                    content.innerHTML = `
+                        <div style="text-align: center; padding: 40px; color: #666;">
+                            <h3>Henüz kapalı sinyal bulunmuyor</h3>
+                        </div>
+                    `;
+                }
+                
+            } catch (error) {
+                showError('Kapalı sinyaller yüklenemedi: ' + error.message);
+            }
+        }
+        
+        // İstatistikler yükle
+        async function loadStats() {
+            try {
+                const response = await fetch(`${API_BASE}/api/stats`);
+                const data = await response.json();
+                
+                const content = document.getElementById('stats-content');
+                content.innerHTML = `
+                    <h2>Performans İstatistikleri</h2>
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-value">${data.total_signals || 0}</div>
+                            <div class="stat-label">Toplam Sinyaller</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value">${data.active_signals || 0}</div>
+                            <div class="stat-label">Aktif Sinyaller</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value">${data.closed_signals || 0}</div>
+                            <div class="stat-label">Kapalı Sinyaller</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value ${(data.success_rate || 0) > 50 ? 'positive' : 'negative'}">${(data.success_rate || 0).toFixed(1)}%</div>
+                            <div class="stat-label">Başarı Oranı</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value ${(data.total_pnl || 0) >= 0 ? 'positive' : 'negative'}">$${(data.total_pnl || 0).toFixed(2)}</div>
+                            <div class="stat-label">Toplam PnL</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value ${(data.avg_pnl || 0) >= 0 ? 'positive' : 'negative'}">$${(data.avg_pnl || 0).toFixed(2)}</div>
+                            <div class="stat-label">Ortalama PnL</div>
+                        </div>
+                    </div>
+                `;
+                
+            } catch (error) {
+                showError('İstatistikler yüklenemedi: ' + error.message);
+            }
+        }
+        
+        // Sinyal kartı oluştur
+        function createSignalCard(signal, isClosed = false) {
+            const pnlClass = signal.pnlPercentage >= 0 ? 'positive' : 'negative';
+            const directionClass = signal.direction === 'LONG' ? 'long' : 'short';
+            
+            return `
+                <div class="signal-card">
+                    <div class="signal-header">
+                        <div class="signal-pair">${signal.symbol}</div>
+                        <div class="signal-direction ${directionClass}">${signal.direction}</div>
+                    </div>
+                    <div class="signal-details">
+                        <div class="detail-item">
+                            <div class="detail-label">Güven</div>
+                            <div class="detail-value">${signal.confidence}%</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Giriş Fiyatı</div>
+                            <div class="detail-value">$${signal.entryPrice}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Güncel Fiyat</div>
+                            <div class="detail-value">$${signal.currentPrice || signal.entryPrice}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">PnL</div>
+                            <div class="detail-value ${pnlClass}">${signal.pnlPercentage >= 0 ? '+' : ''}${signal.pnlPercentage.toFixed(2)}%</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">USD PnL</div>
+                            <div class="detail-value ${pnlClass}">$${signal.pnlUSD >= 0 ? '+' : ''}${signal.pnlUSD.toFixed(2)}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Durum</div>
+                            <div class="detail-value">${isClosed ? signal.closeReason || 'Kapalı' : 'Aktif'}</div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+        
+        // Sekme değiştir
+        function showTab(tabName) {
+            // Sekme butonlarını güncelle
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // İçerikleri gizle/göster
+            document.getElementById('signals-content').style.display = 'none';
+            document.getElementById('closed-content').style.display = 'none';
+            document.getElementById('stats-content').style.display = 'none';
+            
+            document.getElementById(tabName + '-content').style.display = 'block';
+            
+            currentTab = tabName;
+            loadData();
+        }
+        
+        // Manuel yenileme
+        function refreshData() {
+            console.log('🔄 Manuel yenileme başlatıldı');
+            loadData();
+        }
+        
+        // Son güncelleme zamanını güncelle
+        function updateLastUpdate() {
+            const now = new Date();
+            document.getElementById('lastUpdate').textContent = 
+                now.toLocaleTimeString('tr-TR');
+        }
+        
+        // Hata göster
+        function showError(message) {
+            const content = document.getElementById(currentTab + '-content');
+            content.innerHTML = `
+                <div class="error">
+                    <strong>Hata:</strong> ${message}
+                    <br><br>
+                    <button class="refresh-btn" onclick="refreshData()">Tekrar Dene</button>
+                </div>
+            `;
+        }
+        
+        // Sayfa kapatılırken interval'ı temizle
+        window.addEventListener('beforeunload', function() {
+            if (refreshInterval) {
+                clearInterval(refreshInterval);
+            }
+        });
+    </script>
+</body>
+</html>
+
